@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+<body>
+    <div class="container">
+        <div class="js-twig">Bonjour {{prenom}}</div>
+        <div class="js-twig">Vous êtes inscrit depuis {% inscrit | date %}</div>
+        <div class="js-twig">Vous êtes un {% if(sexe = 'm') %}HOMME{% else %}FEMME{% endif %}</div>
+    </div>
+	<div style="height:20px"></div>
+    <div class="container" id="result">
+    </div>
+	<!-- TWIG.JS -->
+    <script type="text/javascript" src="twig.js"></script>
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script type="text/javascript">
+	    var personne = {
+		    'prenom'    : 'jason',
+			'nom'       : 'BOURLARD',
+			'inscrit'   : (new Date(2015, 07, 05)).getTime(),
+			'age'       : 23,
+			'sexe'      : 'm'
+		};
+		$('.js-twig').each(function() {
+		    var m = $(this);
+			$('#result').append('<div>' + Twig.parse(m.html(), personne) + '</div>');
+		});
+	</script>
+</body>
+</html>
