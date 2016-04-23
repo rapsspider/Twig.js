@@ -76,10 +76,11 @@ Twig = (function(Twig) {
 	 *	 <li>mm : Minutes en 2 chiffres.</li>
 	 *	 <li>ss : Secondes en 2 chiffres.</li>
 	 * </ul>
-	 * @param String args Le format à utiliser.
+	 * @param String args  Le format à utiliser.
 	 * @param int	date   La date (timestamps) à formater.
+	 * @return String le date formaté.
 	 */
-	Twig.fonctions.date = function(args, date) {
+	Twig.fonctions.date = function(date, args) {
 		if(date === undefined || date == "") {
 			return "";
 		}
@@ -119,7 +120,7 @@ Twig = (function(Twig) {
 	 * @param String string le texte à ne pas échapper.
 	 * @return Le texte non échappé.
 	 */
-	Twig.fonctions.ne = function(args, texte) {
+	Twig.fonctions.ne = function(texte, args) {
 		return texte;
 	};
 	Twig.fonctions.noescape = Twig.fonctions.ne;
@@ -127,17 +128,18 @@ Twig = (function(Twig) {
 	/**
 	 * Fonction permettant de formater un nombre en spécifiant
 	 * le nombre de chiffres avant et après la virgule.
-	 * @param String format Le format à utiliser (Ex : 4,2).
+	 * @param String args   Le format à utiliser (Ex : 4,2).
 	 * @param Float  nombre La nombre à formater.
+	 * @return String le nombre formaté.
 	 */
-	Twig.fonctions.nombre = function(format, nombre) {
-		format = format.split(',');
-		p = Math.pow(10, parseInt(format[0]));
-		if(format.length == 1) {
+	Twig.fonctions.nombre = function(nombre, args) {
+		args = args.split(',');
+		p = Math.pow(10, parseInt(args[0]));
+		if(args.length == 1) {
 			nombre = parseInt(nombre) % p;
 		} else {
 			nombre = parseFloat(nombre) % p;
-			p = Math.pow(10, parseInt(format[1]));
+			p = Math.pow(10, parseInt(args[1]));
 			nombre = Math.floor(nombre * p) / p;
 		}
 		return nombre;
@@ -402,7 +404,7 @@ Twig = (function(Twig) {
 	var getFonctionResult = function(variable, fonction, arguments) {
 		if(Twig.fonctions[fonction] !== undefined) {
 			variable = getAttribut(variable);
-			return Twig.fonctions[fonction](arguments, variable);
+			return Twig.fonctions[fonction](variable, arguments);
 		} // else
 		console.error('Une erreur inattendue s\'est produite, fonction ' + fonction + ' inconnue (caractère ' + texte.i + ') : ' + texte.chaine);
 		error = true;
